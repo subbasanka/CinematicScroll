@@ -6,9 +6,7 @@ An elite, high-fidelity WebGL interactive showcase featuring the **DURAMAX** lux
 
 ## 🎬 Demo
 
-https://github.com/subbasanka/CinematicScroll/raw/main/DemoVideo.mp4
-
-> If the video doesn't play above, [watch it on OneDrive](https://1drv.ms/v/c/ee20b6b1d484dbc6/IQCnXgIJY9sBRpAwzQP8NbpdAY1uWd05ts5UdVXyWUsOAlk?e=cmHYof).
+<img width="800" height="450" alt="VideoProject21-ezgif com-video-to-gif-converter" src="https://github.com/user-attachments/assets/80dd12fb-e11e-4b1c-894b-36070b5b5c91" />
 
 ---
 
