@@ -911,18 +911,18 @@ body {
 }
 
 @media (max-width: 1024px) {
-    /* Reshape scroll layouts for tablet/mobile where WebGL overlays can conflict */
     .scroll-section {
         flex-direction: column;
-        justify-content: flex-end; /* Push HTML text/UI down to bottom half */
+        justify-content: flex-end;
         padding-top: 40px;
         padding-bottom: 60px;
         min-height: 100vh;
+        background: linear-gradient(to bottom, rgba(5,6,8,0.6) 0%, transparent 20%, transparent 45%, rgba(5,6,8,0.85) 60%);
     }
-    
+
     #hero {
-        justify-content: flex-start; /* Keep Hero text at the top of the screen */
-        padding-top: 100px;
+        justify-content: flex-end;
+        background: linear-gradient(to bottom, rgba(5,6,8,0.5) 0%, transparent 18%, transparent 40%, rgba(5,6,8,0.8) 55%);
     }
     
     .grid-container {
@@ -951,11 +951,11 @@ body {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .hero-description {
         max-width: 600px;
     }
-    
+
     .section-tag-wrapper {
         justify-content: center;
     }
@@ -967,7 +967,11 @@ body {
     }
     
     .nav-links {
-        display: none; /* Hide top links on mobile */
+        display: none;
+    }
+
+    .scroll-indicator {
+        display: none;
     }
     
     .hero-title {

@@ -118,11 +118,11 @@ function createProceduralLabelTexture() {
 // Procedural Audio Engine via Web Audio API (Zero asset latency)
 const AudioEngine = {
     ctx: null,
-    ambientSynth: null,
     ambientGain: null,
     unmuted: false,
     popTriggered: false,
     lastClickProgress: 0,
+    lastClickTime: 0,
     
     startAmbient() {
         if (!this.unmuted) return;
@@ -132,22 +132,23 @@ const AudioEngine = {
             const AudioContext = window.AudioContext || window.webkitAudioContext;
             this.ctx = new AudioContext();
             
-            // Low frequency warm cinematic pad oscillators
+            // Meditative, glass-like high-fidelity ambient drone (Pure sine waves to prevent speaker distortion)
             const osc1 = this.ctx.createOscillator();
             const osc2 = this.ctx.createOscillator();
             this.ambientGain = this.ctx.createGain();
             const lowpass = this.ctx.createBiquadFilter();
             
-            osc1.type = 'triangle';
-            osc1.frequency.setValueAtTime(55, this.ctx.currentTime); // A1 note
+            // Clean mid-range pure harmonics (completely removes the muddy low-frequency bass hums)
+            osc1.type = 'sine';
+            osc1.frequency.setValueAtTime(220, this.ctx.currentTime); // A3 note
             
             osc2.type = 'sine';
-            osc2.frequency.setValueAtTime(110, this.ctx.currentTime); // A2 note
-            osc2.detune.setValueAtTime(6, this.ctx.currentTime); // Rich stereo detuning
+            osc2.frequency.setValueAtTime(440, this.ctx.currentTime); // A4 note
+            osc2.detune.setValueAtTime(4, this.ctx.currentTime); // Subtle premium chorus chorus detune
             
             lowpass.type = 'lowpass';
-            lowpass.frequency.setValueAtTime(250, this.ctx.currentTime);
-            lowpass.Q.setValueAtTime(1.5, this.ctx.currentTime);
+            lowpass.frequency.setValueAtTime(400, this.ctx.currentTime); // Soft glass ceiling
+            lowpass.Q.setValueAtTime(1.0, this.ctx.currentTime);
             
             this.ambientGain.gain.setValueAtTime(0.0, this.ctx.currentTime);
             
@@ -159,8 +160,8 @@ const AudioEngine = {
             osc1.start();
             osc2.start();
             
-            // Fade in ambient music smoothly
-            this.ambientGain.gain.linearRampToValueAtTime(0.4, this.ctx.currentTime + 1.5);
+            // Fade in ambient drone very softly (background atmospheric pad)
+            this.ambientGain.gain.linearRampToValueAtTime(0.05, this.ctx.currentTime + 2.0);
         } catch (e) {
             console.warn("Web Audio API failed to load", e);
         }
@@ -169,75 +170,73 @@ const AudioEngine = {
     updateAmbientPitch(scrollProgress, mouseX) {
         if (!this.ctx || !this.unmuted || !this.ambientGain) return;
         
-        // Dynamically adjust synthesizer characteristics on scroll and hover
-        const freqShift = 55 + (scrollProgress * 30) + (Math.abs(mouseX) * 15);
-        this.ambientGain.gain.setValueAtTime(0.35 + (scrollProgress * 0.15), this.ctx.currentTime);
+        // Soft modulation based on scrolling activity (keeps it subtle and pristine)
+        const targetGain = 0.04 + (scrollProgress * 0.03);
+        this.ambientGain.gain.setTargetAtTime(targetGain, this.ctx.currentTime, 0.1);
     },
     
     triggerPop() {
         if (!this.ctx || !this.unmuted) return;
         
-        // 1. Synthesize air vacuum hiss using white noise
-        const bufferSize = this.ctx.sampleRate * 0.3; // 300ms
-        const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-        const output = noiseBuffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-            output[i] = Math.random() * 2 - 1;
-        }
+        const now = this.ctx.currentTime;
         
-        const whiteNoise = this.ctx.createBufferSource();
-        whiteNoise.buffer = noiseBuffer;
+        // Professional, organic suction pop using two layered frequency-sweeping sine oscillators (zero static white-noise)
         
-        const noiseFilter = this.ctx.createBiquadFilter();
-        noiseFilter.type = 'bandpass';
-        noiseFilter.frequency.setValueAtTime(1500, this.ctx.currentTime);
-        noiseFilter.frequency.exponentialRampToValueAtTime(300, this.ctx.currentTime + 0.25);
+        // 1. Primary Low Suction Sweep (360Hz down to 60Hz)
+        const popOsc1 = this.ctx.createOscillator();
+        const popGain1 = this.ctx.createGain();
+        popOsc1.type = 'sine';
+        popOsc1.frequency.setValueAtTime(360, now);
+        popOsc1.frequency.exponentialRampToValueAtTime(60, now + 0.16);
+        popGain1.gain.setValueAtTime(0.18, now);
+        popGain1.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
         
-        const noiseGain = this.ctx.createGain();
-        noiseGain.gain.setValueAtTime(0.3, this.ctx.currentTime);
-        noiseGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.28);
+        popOsc1.connect(popGain1);
+        popGain1.connect(this.ctx.destination);
         
-        whiteNoise.connect(noiseFilter);
-        noiseFilter.connect(noiseGain);
-        noiseGain.connect(this.ctx.destination);
+        popOsc1.start(now);
+        popOsc1.stop(now + 0.18);
         
-        // 2. Synthesize deep suction pop using downward frequency sine sweeps
-        const popOsc = this.ctx.createOscillator();
-        popOsc.type = 'sine';
-        popOsc.frequency.setValueAtTime(140, this.ctx.currentTime);
-        popOsc.frequency.exponentialRampToValueAtTime(20, this.ctx.currentTime + 0.12);
+        // 2. Harmonic Upper Air Sweep (720Hz down to 120Hz)
+        const popOsc2 = this.ctx.createOscillator();
+        const popGain2 = this.ctx.createGain();
+        popOsc2.type = 'sine';
+        popOsc2.frequency.setValueAtTime(720, now);
+        popOsc2.frequency.exponentialRampToValueAtTime(120, now + 0.12);
+        popGain2.gain.setValueAtTime(0.08, now);
+        popGain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
         
-        const popGain = this.ctx.createGain();
-        popGain.gain.setValueAtTime(0.65, this.ctx.currentTime);
-        popGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.15);
+        popOsc2.connect(popGain2);
+        popGain2.connect(this.ctx.destination);
         
-        popOsc.connect(popGain);
-        popGain.connect(this.ctx.destination);
-        
-        whiteNoise.start();
-        popOsc.start();
-        whiteNoise.stop(this.ctx.currentTime + 0.3);
-        popOsc.stop(this.ctx.currentTime + 0.16);
+        popOsc2.start(now);
+        popOsc2.stop(now + 0.14);
     },
     
     triggerClick() {
         if (!this.ctx || !this.unmuted) return;
         
-        // Synthesize microscopic thread slide friction clicking
+        const now = this.ctx.currentTime;
+        
+        // Prevent rapid overlapping clicks that cause digital buffer clipping
+        if (now - this.lastClickTime < 0.075) return; // Limit to ~13 clicks per second maximum
+        this.lastClickTime = now;
+        
+        // Pristine physical wood-block/glass mechanical click
         const clickOsc = this.ctx.createOscillator();
         const clickGain = this.ctx.createGain();
         
-        clickOsc.type = 'triangle';
-        clickOsc.frequency.setValueAtTime(2200 + Math.random() * 800, this.ctx.currentTime);
+        clickOsc.type = 'sine'; // Sine wave is pure and distortion-free
+        clickOsc.frequency.setValueAtTime(1400 + Math.random() * 400, now); // Sweet wooden tap resonance
         
-        clickGain.gain.setValueAtTime(0.04, this.ctx.currentTime);
-        clickGain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.012);
+        clickGain.gain.setValueAtTime(0.018, now); // Extremely soft, high-fidelity tactile feedback
+        clickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.008); // Sharp decaying pulse
         
         clickOsc.connect(clickGain);
         clickGain.connect(this.ctx.destination);
         
-        clickOsc.start();
-        clickOsc.stop(this.ctx.currentTime + 0.015);
+        clickOsc.start(now);
+        clickOsc.stop(now + 0.012);
     },
     
     mute() {
@@ -254,7 +253,7 @@ const AudioEngine = {
                 this.ctx.resume();
             }
             if (this.ambientGain) {
-                this.ambientGain.gain.setValueAtTime(0.4, this.ctx.currentTime);
+                this.ambientGain.gain.setValueAtTime(0.05, this.ctx.currentTime);
             }
         } else {
             this.startAmbient();
@@ -390,8 +389,8 @@ function updateParticles() {
 // Procedural 3D Geometry and Advanced Material Builders
 function buildBottle() {
     bottleGroup = new THREE.Group();
-    bottleGroup.position.set(0, state.isMobile ? -1.85 : -0.7, 0); // Ground bottle center nicely
-    bottleGroup.scale.setScalar(state.isMobile ? 0.72 : 1.0); // Perfect mobile scale
+    bottleGroup.position.set(0, state.isMobile ? -0.7 : -0.7, 0);
+    bottleGroup.scale.setScalar(state.isMobile ? 0.62 : 1.0);
     scene.add(bottleGroup);
 
     innerBottleGroup = new THREE.Group();
@@ -731,8 +730,8 @@ function onWindowResize() {
     // If mobile state toggled, dynamically adjust positions/scales and rebuild timelines
     if (wasMobile !== state.isMobile) {
         if (bottleGroup) {
-            bottleGroup.position.set(0, state.isMobile ? -1.85 : -0.7, 0);
-            bottleGroup.scale.setScalar(state.isMobile ? 0.72 : 1.0);
+            bottleGroup.position.set(0, state.isMobile ? -0.7 : -0.7, 0);
+            bottleGroup.scale.setScalar(state.isMobile ? 0.62 : 1.0);
         }
         setupScrollTimelines();
     }
@@ -796,7 +795,7 @@ function setupScrollTimelines() {
                 
                 const delta = Math.abs(self.progress - AudioEngine.lastClickProgress);
                 // Trigger rapid micro click ticks as cap screws/unscrews on scroll
-                if (delta > 0.005) {
+                if (delta > 0.02) {
                     AudioEngine.triggerClick();
                     AudioEngine.lastClickProgress = self.progress;
                 }
@@ -820,24 +819,23 @@ function setupScrollTimelines() {
         // --- TIMELINE STEP 1: HERO TO UNSEALING ---
         .to(bottleGroup.position, {
             x: state.isMobile ? 0 : xPosRight,
-            y: state.isMobile ? 1.45 : -1.0,
-            z: state.isMobile ? -0.3 : 0.2,
+            y: state.isMobile ? 1.2 : -1.0,
+            z: state.isMobile ? 0.2 : 0.2,
             duration: 2
         }, 0)
         .to(bottleGroup.rotation, {
-            y: Math.PI * 2.3, // Turns the gold embossed logo beautifully away, exposing thread details
+            y: Math.PI * 2.3,
             x: 0.12,
             z: 0.05,
             duration: 2
         }, 0)
-        // UNSCREWING THE CAP VIA EXACT SPIRAL RATIOS
         .to(capGroup.position, {
-            y: 5.8, // Elevates the cap straight up, exposing unsealed neck
+            y: 5.8,
             duration: 2,
             ease: "power1.inOut"
         }, 0)
         .to(capGroup.rotation, {
-            y: -Math.PI * 6.5, // 3.25 full counter-clockwise unscrewing rotations
+            y: -Math.PI * 6.5,
             duration: 2,
             ease: "power1.inOut"
         }, 0)
@@ -845,8 +843,8 @@ function setupScrollTimelines() {
         // --- TIMELINE STEP 2: FEATURES TO CUSTOMIZER PANEL ---
         .to(bottleGroup.position, {
             x: state.isMobile ? 0 : xPosLeft,
-            y: state.isMobile ? 1.55 : -0.75,
-            z: state.isMobile ? 0.2 : 0.9, // Zooms forward
+            y: state.isMobile ? 1.4 : -0.75,
+            z: state.isMobile ? 0.3 : 0.9,
             duration: 2
         }, 2)
         .to(bottleGroup.rotation, {
@@ -856,7 +854,7 @@ function setupScrollTimelines() {
             duration: 2
         }, 2)
         .to(capGroup.position, {
-            y: 5.2, // Rests floats nearby in customizer frame
+            y: 5.2,
             z: 0.4,
             duration: 2
         }, 2)
@@ -864,18 +862,18 @@ function setupScrollTimelines() {
         // --- TIMELINE STEP 3: CUSTOMIZER TO SPECIFICATION GRIDS ---
         .to(bottleGroup.position, {
             x: 0,
-            y: state.isMobile ? 1.75 : 0.65,
-            z: state.isMobile ? 0.8 : 1.6, // Extreme zoom in highlighting base recycled embossing
+            y: state.isMobile ? 1.6 : 0.65,
+            z: state.isMobile ? 0.5 : 1.6,
             duration: 2
         }, 4)
         .to(bottleGroup.rotation, {
-            x: Math.PI * 0.45, // Heavy tilt forward exposing the detailed bottom structure
+            x: Math.PI * 0.45,
             y: Math.PI * 2.5,
             z: 0,
             duration: 2
         }, 4)
         .to(capGroup.position, {
-            y: 9.0, // Throw cap completely out of camera frames
+            y: 9.0,
             z: -3.0,
             duration: 2
         }, 4)
@@ -884,22 +882,22 @@ function setupScrollTimelines() {
         .to(bottleGroup.position, {
             x: state.isMobile ? 0 : -2.0,
             y: state.isMobile ? 0.8 : -1.25,
-            z: -0.8, // Pushes into soft ambient background
+            z: state.isMobile ? -0.3 : -0.8,
             duration: 2
         }, 6)
         .to(bottleGroup.rotation, {
             x: 0.05,
-            y: Math.PI * 4.0, // Smoothly returns logo center-facing camera
+            y: Math.PI * 4.0,
             z: 0.02,
             duration: 2
         }, 6)
         .to(capGroup.position, {
-            y: 3.25, // Caps screws back down perfectly to fully closed!
+            y: 3.25,
             z: 0,
             duration: 2
         }, 6)
         .to(capGroup.rotation, {
-            y: 0, // Returns to flat locked thread rotation
+            y: 0,
             duration: 2
         }, 6);
 }
