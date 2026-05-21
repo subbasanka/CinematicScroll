@@ -4,6 +4,14 @@ An elite, high-fidelity WebGL interactive showcase featuring the **DURAMAX** lux
 
 ---
 
+## 🎬 Demo
+
+https://github.com/subbasanka/CinematicScroll/raw/main/DemoVideo.mp4
+
+> If the video doesn't play above, [watch it on OneDrive](https://1drv.ms/v/c/ee20b6b1d484dbc6/IQCnXgIJY9sBRpAwzQP8NbpdAY1uWd05ts5UdVXyWUsOAlk?e=cmHYof).
+
+---
+
 ## 🎭 Advanced Cinematic Features
 
 ### 1. True HDPE Translucency & Fluid Core
