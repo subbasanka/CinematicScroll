@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DURAMAX | Luxury Sustainable HDPE Packaging</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- WebGL Background Canvas Container -->
+    <div id="webgl-container"></div>
+
+    <!-- Vignette / Lighting Overlay for Cinema Aesthetic -->
+    <div class="vignette-overlay"></div>
+
+    <!-- UI Overlay and Sections -->
+    <div id="scroll-wrapper">
+        
+        <!-- Header / Navigation -->
+        <header class="main-header">
+            <div class="logo">DURAMAX</div>
+            <nav class="nav-links">
+                <a href="#hero">Design</a>
+                <a href="#anatomy">Unseal</a>
+                <a href="#customizer">Configure</a>
+                <a href="#specs">Specifications</a>
+            </nav>
+            
+            <!-- Controls Group: Audio and Call to Action -->
+            <div class="header-controls">
+                <button id="audio-toggle" class="audio-btn btn-muted" title="Toggle Cinematic Sound">
+                    <span class="audio-wave-bar bar-1"></span>
+                    <span class="audio-wave-bar bar-2"></span>
+                    <span class="audio-wave-bar bar-3"></span>
+                    <span class="audio-wave-bar bar-4"></span>
+                    <span class="audio-btn-label">Sound Off</span>
+                </button>
+                <a href="#contact" class="cta-button">Inquire Now</a>
+            </div>
+        </header>
+
+        <!-- SECTION 1: HERO -->
+        <section id="hero" class="scroll-section">
+            <div class="container hero-container">
+                <div class="hero-text-content">
+                    <div class="section-tag-wrapper">
+                        <span class="eyebrow-text">The New Standard in Packaging</span>
+                        <span class="tag-badge">ECO-LUXE</span>
+                    </div>
+                    <h1 class="hero-title">Pure Form.<br><span class="italic-text">Zero Compromise.</span></h1>
+                    <p class="hero-description">Meet Duramax. A breathtaking high-density polyethylene (HDPE) masterpiece designed for elite product formulas. Where hermetic physics meets high-fashion sculpture.</p>
+                    <div class="hero-cta-group">
+                        <a href="#anatomy" class="btn btn-primary">Experience the Unsealing <i class="fas fa-arrow-down-long"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Elegant Mouse Scroll Guide -->
+            <div class="scroll-indicator">
+                <span class="mouse">
+                    <span class="wheel"></span>
+                </span>
+                <span class="scroll-text">Scroll to Uncap</span>
+            </div>
+        </section>
+
+        <!-- SECTION 2: BOTTLE STRUCTURE / UNFOLDING -->
+        <section id="anatomy" class="scroll-section">
+            <div class="container grid-container">
+                <div class="grid-content left-align">
+                    <span class="section-tag">PHYSICAL CRAFTSMANSHIP</span>
+                    <h2 class="section-title">The Hermetic Seal</h2>
+                    <p class="section-text">Scroll down to witness the cap glide off. Guided by a mathematical helical thread, the friction-fit sealing system ensures absolute containment, shielding active ingredients from oxidation.</p>
+                    
+                    <div class="feature-bullets">
+                        <div class="bullet-item">
+                            <div class="bullet-icon"><i class="fas fa-dna"></i></div>
+                            <div class="bullet-text">
+                                <h4>Mathematical Helix Thread</h4>
+                                <p>Extruded spiral path provides uniform clamping torque, sealing leaks entirely.</p>
+                            </div>
+                        </div>
+                        <div class="bullet-item">
+                            <div class="bullet-icon"><i class="fas fa-wind"></i></div>
+                            <div class="bullet-text">
+                                <h4>Pressure Release Venting</h4>
+                                <p>Engineered to neutralize vacuum pressure upon opening, emitting an audible, satisfying release.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: INTERACTIVE DYNAMIC CONFIGURATOR -->
+        <section id="customizer" class="scroll-section">
+            <div class="container grid-container reversed">
+                <div class="grid-content right-align customizer-card">
+                    <span class="section-tag">STUDIO CONFIGURATOR</span>
+                    <h2 class="section-title">Curate Your Finish</h2>
+                    <p class="section-text">Shape your product's tactile footprint. Select luxurious material finishes, cap colors, and custom formula shades directly in our interactive simulator.</p>
+                    
+                    <!-- Configurator Panel Tabs -->
+                    <div class="config-tabs">
+                        
+                        <!-- Cap Palette -->
+                        <div class="config-section">
+                            <h4 class="config-title">1. Select Cap Color</h4>
+                            <div class="color-options" id="cap-options">
+                                <button class="color-dot active" data-color="#FFFFFF" data-name="Pure Alabaster" style="background-color: #FFFFFF;"></button>
+                                <button class="color-dot" data-color="#1E2A4A" data-name="Cobalt Satin" style="background-color: #1E2A4A;"></button>
+                                <button class="color-dot" data-color="#1C382A" data-name="Emerald Silk" style="background-color: #1C382A;"></button>
+                                <button class="color-dot" data-color="#9C623C" data-name="Sienna Bronze" style="background-color: #9C623C;"></button>
+                                <button class="color-dot" data-color="#141416" data-name="Obsidian Matte" style="background-color: #141416;"></button>
+                            </div>
+                            <div class="config-value">Selected Cap: <span id="cap-name" class="accent-text">Pure Alabaster</span></div>
+                        </div>
+
+                        <!-- Bottle Body Finish -->
+                        <div class="config-section">
+                            <h4 class="config-title">2. Bottle Material Profile</h4>
+                            <div class="material-options">
+                                <button class="btn-pill" data-finish="frosted">Frosted Opal</button>
+                                <button class="btn-pill active" data-finish="glossy">Glossy Alabaster</button>
+                                <button class="btn-pill" data-finish="matte">Matte Obsidian</button>
+                            </div>
+                        </div>
+
+                        <!-- Inner Liquid Formula Tint -->
+                        <div class="config-section">
+                            <h4 class="config-title">3. Formula Active Tint</h4>
+                            <div class="color-options" id="liquid-options">
+                                <button class="color-dot active" data-color="#EAA63D" data-name="Golden Retinol" style="background-color: #EAA63D;"></button>
+                                <button class="color-dot" data-color="#6EB4E4" data-name="Oceanic Peptide" style="background-color: #6EB4E4;"></button>
+                                <button class="color-dot" data-color="#DF7A84" data-name="Rose Serum" style="background-color: #DF7A84;"></button>
+                                <button class="color-dot" data-color="#A57EE6" data-name="Lavendar Oil" style="background-color: #A57EE6;"></button>
+                            </div>
+                            <div class="config-value">Selected Formula: <span id="liquid-name" class="accent-text">Golden Retinol</span></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: ECO-FRIENDLY & SPECS -->
+        <section id="specs" class="scroll-section">
+            <div class="container spec-container">
+                <div class="spec-intro text-center">
+                    <span class="section-tag">ENGINEERING DETAILS</span>
+                    <h2 class="section-title">Built for the Biosphere</h2>
+                    <p class="section-subtitle">Premium structural properties, crafted with pure high-density resins.</p>
+                </div>
+                
+                <div class="spec-grid">
+                    <div class="spec-card">
+                        <div class="spec-header">
+                            <span class="spec-num">02</span>
+                            <span class="spec-icon"><i class="fas fa-rotate-left"></i></span>
+                        </div>
+                        <h3>Circular Cycle 2</h3>
+                        <p>Fully compliant with resin code 02. Extensively sorted and completely recyclable, reducing atmospheric carbon outputs by up to 60% compared to virgin PET.</p>
+                    </div>
+
+                    <div class="spec-card">
+                        <div class="spec-header">
+                            <span class="spec-num">BPA</span>
+                            <span class="spec-icon"><i class="fas fa-shield-virus"></i></span>
+                        </div>
+                        <h3>Zero Leaching</h3>
+                        <p>100% endocrine-disruptor free. Fully compliant with rigorous FDA and EU standards for organic solvents, medical compounds, and cosmetics.</p>
+                    </div>
+
+                    <div class="spec-card">
+                        <div class="spec-header">
+                            <span class="spec-num">95J</span>
+                            <span class="spec-icon"><i class="fas fa-weight-scale"></i></span>
+                        </div>
+                        <h3>Ultra Impact Rating</h3>
+                        <p>Highly resistant to mechanical stress. Dual-wall HDPE provides high drop strength, maintaining hermetic integrity even under 4-meter vertical impacts.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: INQUIRE / FOOTER -->
+        <section id="contact" class="scroll-section contact-section">
+            <div class="container contact-container">
+                <div class="contact-box">
+                    <span class="section-tag">LUXURY SPECIFICATION REQUEST</span>
+                    <h2 class="section-title">Envision Your Collection</h2>
+                    <p class="section-text">Speak with a Duramax packaging architect. Request custom material mockups, dimensional spec sheets, and volumes.</p>
+                    
+                    <form class="contact-form" onsubmit="event.preventDefault(); showInquiryAlert();">
+                        <div class="form-row">
+                            <input type="text" placeholder="Full Name" required>
+                            <input type="email" placeholder="Professional Email" required>
+                        </div>
+                        <input type="text" placeholder="Brand / Organization Name">
+                        <textarea placeholder="Outline your active formulation, bottle volume (50ml - 500ml), and desired finish profiles..." rows="4"></textarea>
+                        <button type="submit" class="btn btn-primary submit-btn">Request Designer Kit <i class="fas fa-arrow-right-long"></i></button>
+                    </form>
+                </div>
+                
+                <footer class="footer">
+                    <p>&copy; 2026 DURAMAX Materials Lab. All rights reserved.</p>
+                    <div class="footer-links">
+                        <a href="#">Privacy Framework</a>
+                        <a href="#">Sustainability Ledger</a>
+                        <a href="#">Global Logistics</a>
+                    </div>
+                </footer>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Scroll Progress Indicator -->
+    <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <!-- Visual Sound Warning Modal (Elegant CSS Alert) -->
+    <div id="audio-alert" class="audio-alert-toast hide">
+        <div class="audio-alert-icon"><i class="fas fa-volume-high"></i></div>
+        <div class="audio-alert-content">
+            <h5>Cinematic Audio Activated</h5>
+            <p>Scroll down or move the mouse to hear the synthetic engine.</p>
+        </div>
+        <button id="close-audio-alert" class="audio-alert-close">&times;</button>
+    </div>
+
+    <!-- Scripts: Local robust dependencies -->
+    <script src="three.min.js"></script>
+    <script src="gsap.min.js"></script>
+    <script src="ScrollTrigger.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+        function showInquiryAlert() {
+            alert('Your request has been securely logged. Our Duramax packaging consultants will contact you within 24 hours with custom design materials.');
+        }
+    </script>
+</body>
+</html>
